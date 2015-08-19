@@ -12,13 +12,11 @@
 
 var Comment = React.createClass({
   render: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
     return (
       <div className="comment">
-        <h2 className="commentAuthor">
-          {this.props.author}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+        <p className="commentAuthor">
+          {this.props.text}
+        </p>
       </div>
     );
   }
@@ -69,7 +67,7 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-        <h1>Comments</h1>
+        <h1>To Do List</h1>
         <CommentList data={this.state.data} />
         <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
@@ -84,8 +82,8 @@ var CommentList = React.createClass({
         // `key` is a React-specific concept and is not mandatory for the
         // purpose of this tutorial. if you're curious, see more here:
         // http://facebook.github.io/react/docs/multiple-components.html#dynamic-children
-        <Comment author={comment.author} key={index}>
-          {comment.text}
+        <Comment text={comment.text} key={index}>
+
         </Comment>
       );
     });
@@ -100,20 +98,17 @@ var CommentList = React.createClass({
 var CommentForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
-    var author = React.findDOMNode(this.refs.author).value.trim();
     var text = React.findDOMNode(this.refs.text).value.trim();
-    if (!text || !author) {
+    if (!text) {
       return;
     }
-    this.props.onCommentSubmit({author: author, text: text});
-    React.findDOMNode(this.refs.author).value = '';
+    this.props.onCommentSubmit({text: text});
     React.findDOMNode(this.refs.text).value = '';
   },
   render: function() {
     return (
       <form className="commentForm" onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Your name" ref="author" />
-        <input type="text" placeholder="Say something..." ref="text" />
+        <input type="text" placeholder="What needs to be done..." ref="text" />
         <input type="submit" value="Post" />
       </form>
     );

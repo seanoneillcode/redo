@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.get("/comments.json", function(req, res) {
-    fs.readFile("server/comments.json", function(err, data) {
+    fs.readFile("comments.json", function(err, data) {
         res.setHeader("Cache-Control", "no-cache");
         res.json(JSON.parse(data));
     });
